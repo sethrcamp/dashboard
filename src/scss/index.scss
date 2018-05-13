@@ -29,8 +29,11 @@ html, body {
   overflow-y: scroll;
   pointer-events: none;
 
-  .test-div {
-    background-color: orange;
-    grid-area: 2 / 2 / span 3 / span 4;
+  div {
+    z-index: 1;
+    pointer-events: all !important;
+    &:hover {
+      cursor: move;
+    }
   }
 }

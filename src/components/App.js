@@ -15,7 +15,50 @@ class App extends Component {
       var divs = [];
 
       for(var i=0; i<10000; i++)
-           divs.push(<div id={i} key={i} onClick={(e) => this.addTestComponent(e)}/>);
+           divs.push(
+               <div id={i}
+                    key={i}
+                    onClick={(e) => this.addTestComponent(e)}
+                    onDragOver={(e) => {
+                        e.preventDefault();
+                    }}
+                    onDrop={(e) => {
+                        e.preventDefault();
+                        var index = parseInt(e.dataTransfer.getData("index"));
+                        var height = parseInt(e.dataTransfer.getData("height"));
+                        var width = parseInt(e.dataTransfer.getData("width"));
+
+                        var id = e.currentTarget.id;
+                        var row = Math.floor(id / 10) + 1;
+                        var column = id % 10 + 1;
+
+                        var newComponents = this.state.gridComponents;
+                        newComponents[index] = <div style={{
+                                                        gridArea: row+" / "+column+" / span "+width+" / span "+height,
+                                                        backgroundColor: newComponents[index].props.style.backgroundColor
+                                                    }}
+                                                    draggable="true"
+                                                    onDragStart={(e) => {
+                                                        e.dataTransfer.setData("index", ""+index);
+                                                        e.dataTransfer.setData("height", ""+height);
+                                                        e.dataTransfer.setData("width", ""+width);
+                                                    }}
+                                                    onScroll={(e) => {
+                                                        e.stopPropagation();
+                                                        e.preventDefault();
+                                                    }}
+
+                                                >
+                                                </div>
+                        ;
+
+                        this.setState({
+                            gridComponents: newComponents
+                        })
+
+                    }}
+               />
+           );
 
       return divs;
   }
@@ -30,10 +73,21 @@ class App extends Component {
     var color = prompt("Enter the color of the component");
 
     var newComponents = this.state.gridComponents;
+    var newIndex = newComponents.length;
     newComponents.push(
         <div style={{
                  gridArea: row+" / "+column+" / span "+width+" / span "+height,
                  backgroundColor: color
+             }}
+             draggable="true"
+             onDragStart={(e) => {
+                 e.dataTransfer.setData("index", ""+newIndex);
+                 e.dataTransfer.setData("height", ""+height);
+                 e.dataTransfer.setData("width", ""+width);
+             }}
+             onScroll={(e) => {
+                 e.stopPropagation();
+                 e.preventDefault();
              }}
         >
         </div>
