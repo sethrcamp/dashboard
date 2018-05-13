@@ -107,7 +107,11 @@ class App extends Component {
       >
           {this.renderExampleCells()}
       </div>,
-      <div className="overlay-grid">
+      <div className="overlay-grid"
+           onScroll={(e) => {
+               document.getElementsByClassName("app")[0].scrollTop = e.currentTarget.scrollTop;
+           }}
+      >
           {this.state.gridComponents}
       </div>
     ];
