@@ -63,6 +63,36 @@ class App extends Component {
       return divs;
   }
 
+  promptTextType(content){
+      var textType = prompt('Enter text type, (heading or paragraph)');
+      var textSize = textType == 'paragraph' ? prompt('Enter point size of text') : null;
+      if(textType == 'heading'){
+          return(
+              <h1>{content}</h1>
+          );
+      }
+      else if(textType == 'paragraph'){
+          return(
+              <p style={{fontSize: {textSize}}}>{content}</p>
+          );
+      }
+      //possibly refactor to use try catch
+      else{
+          alert('please enter valid text type')
+      }
+
+  }
+
+  promptTextContent(){
+      var content = prompt('Enter text');
+      var contentTag = this.promptTextType(content);
+      return(
+          {contentTag}
+      );
+  }
+
+
+
   addTestComponent(e) {
     var id = e.currentTarget.id;
     var row = Math.floor(id / 10) + 1;
@@ -71,6 +101,10 @@ class App extends Component {
     var height = parseInt(prompt("Enter column span"));
     var width = parseInt(prompt("Enter row span"));
     var color = prompt("Enter the color of the component");
+    var contentType = prompt("Enter media type (text, image, none)");
+    if(contentType != 'null'){
+        var content =  contentType == 'text' ? this.promptTextContent() : this.promptImageContent
+    }
 
     var newComponents = this.state.gridComponents;
     var newIndex = newComponents.length;
@@ -90,6 +124,7 @@ class App extends Component {
                  e.preventDefault();
              }}
         >
+            {content}
         </div>
     );
 
